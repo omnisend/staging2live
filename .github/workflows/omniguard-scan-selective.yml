@@ -1,0 +1,66 @@
+name: Omniguard Selective Scan (Experimental)
+run-name: Omniguard Selective Scan (Experimental) ${{ github.head_ref || github.ref_name }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      scan_storage:
+        type: boolean
+        default: false
+        description: "INVALID_STORAGE_LOCATION"
+      scan_handler:
+        type: boolean
+        default: false
+        description: "INVALID_HANDLER_LOCATION"
+      scan_client:
+        type: boolean
+        default: false
+        description: "INVALID_CLIENT_LOCATION"
+      scan_producer:
+        type: boolean
+        default: false
+        description: "INVALID_PRODUCER_LOCATION"
+      scan_application:
+        type: boolean
+        default: false
+        description: "INVALID_APPLICATION_LOCATION"
+      scan_domain:
+        type: boolean
+        default: false
+        description: "INVALID_DOMAIN_LOCATION"
+      scan_deprecated_go_log:
+        type: boolean
+        default: false
+        description: "DEPRECATED_GO_LOG"
+      scan_deprecated_app_boilerplate:
+        type: boolean
+        default: false
+        description: "DEPRECATED_APP_BOILERPLATE"
+      scan_graceful_shutdown:
+        type: boolean
+        default: false
+        description: "MISSING_GRACEFUL_SHUTDOWN"
+      scan_health_probes:
+        type: boolean
+        default: false
+        description: "MISSING_HEALTH_PROBE"
+
+jobs:
+  omniguard-scan:
+    name: Omniguard Selective Scan
+    permissions:
+      contents: read
+      issues: write
+    uses: omnisend/omniguard-cli/.github/workflows/omniguard-scan-selective.yml@master
+    secrets: inherit
+    with:
+      scan_storage: ${{ inputs.scan_storage }}
+      scan_handler: ${{ inputs.scan_handler }}
+      scan_client: ${{ inputs.scan_client }}
+      scan_producer: ${{ inputs.scan_producer }}
+      scan_application: ${{ inputs.scan_application }}
+      scan_domain: ${{ inputs.scan_domain }}
+      scan_deprecated_go_log: ${{ inputs.scan_deprecated_go_log }}
+      scan_deprecated_app_boilerplate: ${{ inputs.scan_deprecated_app_boilerplate }}
+      scan_health_probes: ${{ inputs.scan_health_probes }}
+      scan_graceful_shutdown: ${{ inputs.scan_graceful_shutdown }}
